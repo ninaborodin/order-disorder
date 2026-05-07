@@ -1,6 +1,6 @@
 # β-Brass Order-Disorder Transformation
 
-A free-energy minimization simulation of the order-disorder phase transition in β-brass (Cu–Zn) using the Bragg-Williams mean-field model from MIT 3.21 lecture notes (section 65.4).
+A free-energy minimization simulation of the order-disorder phase transition in β-brass (Cu–Zn) using the MIT 3.21 lecture notes (section 65.4).
 
 ## Problem Statement
 
