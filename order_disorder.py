@@ -154,7 +154,7 @@ snap_titles = [
 ]
 
 for ax, T_s, title, seed, c in zip(
-    ax_s, T_snaps, snap_titles, [None, None, None], snap_colors
+    ax_s, T_snaps, snap_titles, [5, 12, 26], snap_colors
 ):
     eta_s = eta_equilibrium(T_s)
     lat = make_lattice(eta_s, seed=seed)
