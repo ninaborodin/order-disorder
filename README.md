@@ -4,14 +4,14 @@ A free-energy minimization simulation of the order-disorder phase transition in 
 
 ## Problem Statement
 
-In β-brass (equiatomic CuZn), Cu and Zn atoms share a BCC lattice. At high temperature, the atoms are distributed randomly across all lattice sites (the disordered A2 phase). Below a critical temperature T_c ≈ 730 K, the system spontaneously orders into the B2 (CsCl-type) structure, in which Cu preferentially occupies one simple-cubic sublattice (α) and Zn preferentially occupies the other (β).
+In β-brass (equiatomic CuZn), Cu and Zn atoms share a BCC lattice. At high temperature, the atoms are distributed randomly across all lattice sites (the disordered A2 phase). Below a critical temperature T_c ≈ 730 K, the system orders into the B2 (CsCl-type) structure, in which Cu preferentially occupies one simple-cubic sublattice (α) and Zn preferentially occupies the other (β).
 
 This is a classic **second-order (continuous) phase transition**: the degree of long-range order, quantified by the order parameter η, decreases continuously to zero as temperature is raised toward T_c, rather than dropping abruptly.
 
 **The key questions this code addresses:**
 
-1. How does the free energy landscape ΔF(η) evolve with temperature, and what does it reveal about the thermodynamic driving force for ordering?
-2. How does the equilibrium order parameter η_eq vary with temperature, and does it match the mean-field prediction of a second-order transition?
+1. How does the free energy landscape ΔF(η) evolve with temperature?
+2. How does the equilibrium order parameter η_eq vary with temperature?
 3. What does the spatial arrangement of atoms look like at different stages of the transition?
 
 ## Model
