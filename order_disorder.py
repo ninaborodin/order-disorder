@@ -94,24 +94,24 @@ ax_F.set_xlabel(r'Order parameter $\eta$', fontsize=11)
 ax_F.set_ylabel(r'$\Delta F(\eta) - \Delta F(0)$  [units of $W$]', fontsize=10)
 ax_F.set_title('Free Energy vs. Order Parameter', fontsize=12)
 ax_F.legend(fontsize=9, loc='lower center', ncol=2)
-ax_F.set_xlim(-0.5, 0.5)
-ax_F.set_ylim(-0.45, 0.85)
+ax_F.set_xlim(-1.5, 1.5)
+ax_F.set_ylim(-1.0, 1.0)
 
 # ── Panel 2: η_eq vs T ───────────────────────────────────────────────────────
-ax_eta.plot(T_sweep * T_c_K, eta_vals, 'k-', lw=2.5, label=r'$\eta_{eq}(T)$')
-ax_eta.axvline(T_c_K, color='red', lw=1.3, ls='--', label=fr'$T_c = {T_c_K}$ K')
+ax_eta.plot(eta_vals, T_sweep * T_c_K, 'k-', lw=2.5, label=r'$\eta_{eq}(T)$')
+ax_eta.axhline(T_c_K, color='red', lw=1.3, ls='--', label=fr'$T_c = {T_c_K}$ K')
 
 snap_colors = [colors[0], colors[1], colors[3]]
 for T_s, T_K, c in zip(T_snaps, T_snaps_K, snap_colors):
     e_s = eta_equilibrium(T_s)
-    ax_eta.scatter(T_K, e_s, s=90, color=c, zorder=5, label=fr'${T_K}$ K')
+    ax_eta.scatter(e_s, T_K, s=90, color=c, zorder=5, label=fr'${T_K}$ K')
 
-ax_eta.set_xlabel(r'$T$ (K)', fontsize=11)
-ax_eta.set_ylabel(r'$\eta_\mathrm{eq}$', fontsize=11)
+ax_eta.set_xlabel(r'$\eta_\mathrm{eq}$', fontsize=11)
+ax_eta.set_ylabel(r'$T$ (K)', fontsize=11)
 ax_eta.set_title('Equilibrium Order Parameter vs. Temperature', fontsize=12)
 ax_eta.legend(fontsize=9)
-ax_eta.set_xlim(0, 1.85 * T_c_K)
-ax_eta.set_ylim(-0.01, 0.53)
+ax_eta.set_xlim(-0.01, 0.53)
+ax_eta.set_ylim(0, 1.85 * T_c_K)
 
 # ── Panels 3-5: lattice snapshots ─────────────────────────────────────────────
 # Gold = Cu (A atoms, sublattice B when ordered), steel blue = Zn (B atoms)
