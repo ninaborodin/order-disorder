@@ -8,6 +8,7 @@ Free-energy minimization using the formula from lecture notes (65.4):
 
 Units: k_B = 1, W = 1  →  T_c = W = 1
 Order parameter η ∈ [-X_B, +X_B]; η=0 disordered, |η|=X_B fully ordered.
+Real-scale: β-brass T_c ≈ 730 K (457 °C), used to label axes in Kelvin.
 """
 
 import numpy as np
@@ -23,7 +24,8 @@ X_A = 1 - X_B     # Cu mole fraction (A atoms)
 W   = 1.0          # ordering interaction; W > 0 → AB bonds energetically favored
 T_c = W            # critical temperature (k_B T_c = W, with k_B = 1)
 
-GRID = 60          # lattice grid size for snapshots
+GRID   = 60        # lattice grid size for snapshots
+T_c_K  = 730      # β-brass critical temperature in Kelvin (≈ 457 °C)
 
 # ── Free energy (per site) ───────────────────────────────────────────────────
 def delta_F(eta, T):
@@ -60,9 +62,11 @@ def make_lattice(eta, seed=42):
 T_sweep  = np.linspace(0.05 * T_c, 1.8 * T_c, 500)
 eta_vals = np.array([eta_equilibrium(T) for T in T_sweep])
 
-# Temperatures for the F(η) curves and lattice snapshots
-T_curves = [0.50, 0.80, 1.00, 1.30]
-T_snaps  = [0.30, 0.85, 1.50]
+# Temperatures for the F(η) curves and lattice snapshots (in Kelvin, then normalised)
+T_curves_K = [300, 600, 730, 900]
+T_snaps_K  = [219, 621, 1095]
+T_curves = [T / T_c_K for T in T_curves_K]
+T_snaps  = [T / T_c_K for T in T_snaps_K]
 colors   = ['#1a237e', '#1565c0', '#f57f17', '#b71c1c']
 
 # ── Figure layout ─────────────────────────────────────────────────────────────
@@ -78,44 +82,44 @@ ax_leg = fig.add_subplot(gs[1, 3])
 
 # ── Panel 1: ΔF(η) − ΔF(0) vs η ─────────────────────────────────────────────
 eta_arr = np.linspace(-0.499, 0.499, 800)
-for T, c in zip(T_curves, colors):
+for T, T_K, c in zip(T_curves, T_curves_K, colors):
     F = np.array([delta_F(e, T) for e in eta_arr])
     F -= delta_F(0.0, T)               # normalize to disordered reference
-    ax_F.plot(eta_arr, F, color=c, lw=2, label=fr'$T/T_c = {T/T_c:.2f}$')
+    lbl = fr'$T = {T_K}$ K' + (r'  $(= T_c)$' if T_K == 730 else '')
+    ax_F.plot(eta_arr, F, color=c, lw=2, label=lbl)
 
 ax_F.axhline(0, color='gray', lw=0.6, ls='--')
 ax_F.axvline(0, color='gray', lw=0.6, ls='--')
 ax_F.set_xlabel(r'Order parameter $\eta$', fontsize=11)
 ax_F.set_ylabel(r'$\Delta F(\eta) - \Delta F(0)$  [units of $W$]', fontsize=10)
 ax_F.set_title('Free Energy vs. Order Parameter', fontsize=12)
-ax_F.legend(fontsize=9, loc='upper center')
+ax_F.legend(fontsize=9, loc='lower center', ncol=2)
 ax_F.set_xlim(-0.5, 0.5)
-ax_F.set_ylim(-0.35, 0.06)
+ax_F.set_ylim(-0.45, 0.85)
 
 # ── Panel 2: η_eq vs T ───────────────────────────────────────────────────────
-ax_eta.plot(T_sweep / T_c, eta_vals, 'k-', lw=2.5, label=r'$\eta_{eq}(T)$')
-ax_eta.axvline(1.0, color='red', lw=1.3, ls='--', label=r'$T_c$')
+ax_eta.plot(T_sweep * T_c_K, eta_vals, 'k-', lw=2.5, label=r'$\eta_{eq}(T)$')
+ax_eta.axvline(T_c_K, color='red', lw=1.3, ls='--', label=fr'$T_c = {T_c_K}$ K')
 
 snap_colors = [colors[0], colors[1], colors[3]]
-for T_s, c in zip(T_snaps, snap_colors):
+for T_s, T_K, c in zip(T_snaps, T_snaps_K, snap_colors):
     e_s = eta_equilibrium(T_s)
-    ax_eta.scatter(T_s / T_c, e_s, s=90, color=c, zorder=5,
-                   label=fr'$T/T_c = {T_s:.2f}$')
+    ax_eta.scatter(T_K, e_s, s=90, color=c, zorder=5, label=fr'${T_K}$ K')
 
-ax_eta.set_xlabel(r'$T \,/\, T_c$', fontsize=11)
+ax_eta.set_xlabel(r'$T$ (K)', fontsize=11)
 ax_eta.set_ylabel(r'$\eta_\mathrm{eq}$', fontsize=11)
 ax_eta.set_title('Equilibrium Order Parameter vs. Temperature', fontsize=12)
 ax_eta.legend(fontsize=9)
-ax_eta.set_xlim(0, 1.85)
+ax_eta.set_xlim(0, 1.85 * T_c_K)
 ax_eta.set_ylim(-0.01, 0.53)
 
 # ── Panels 3-5: lattice snapshots ─────────────────────────────────────────────
 # Gold = Cu (A atoms, sublattice B when ordered), steel blue = Zn (B atoms)
 atom_cmap = ListedColormap(['#FFD700', '#4169E1'])
 snap_titles = [
-    fr'Ordered  ($T/T_c = {T_snaps[0]:.2f}$)',
-    fr'Partial  ($T/T_c = {T_snaps[1]:.2f}$)',
-    fr'Disordered  ($T/T_c = {T_snaps[2]:.2f}$)',
+    fr'Ordered  ($T = {T_snaps_K[0]}$ K)',
+    fr'Partial  ($T = {T_snaps_K[1]}$ K)',
+    fr'Disordered  ($T = {T_snaps_K[2]}$ K)',
 ]
 
 for ax, T_s, title, seed, c in zip(ax_s, T_snaps, snap_titles, [7, 13, 21], snap_colors):
