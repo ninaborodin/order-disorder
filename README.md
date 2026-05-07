@@ -48,8 +48,6 @@ The figure contains four panels:
 
 ## Verification and Testing
 
-The model and implementation were verified against the Bragg-Williams mean-field theory from multiple sources:
-
 **Formula correctness**
 - The energy coefficient 4W per site is correct for a BCC lattice (coordination number z = 8, z/2 = 4 nearest-neighbor pairs per site).
 - The configurational entropy contains four logarithmic terms covering both sublattices, consistent with the derivation in the lecture notes.
